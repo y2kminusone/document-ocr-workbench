@@ -1,0 +1,444 @@
+.tableWrap {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  margin-top: 10px;
+  max-height: none;
+}
+
+.dbTableWrap {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100%;
+  min-width: 0;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 40%, transparent) color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.dbTableWrap::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dbTableWrap::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+  border-radius: 6px;
+}
+
+.dbTableWrap::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 40%, transparent);
+  border-radius: 6px;
+  border: 2px solid color-mix(in srgb, var(--bg) 85%, transparent);
+}
+
+.dbTableWrap::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--muted) 56%, transparent);
+}
+
+.dbTableWrap::-webkit-scrollbar-corner {
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+#dbTableDataTable {
+  width: auto;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+table { border-collapse: collapse; width: 100%; }
+
+tr { border-bottom: 1px solid var(--border); }
+
+th, td {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-strong);
+  z-index: 2;
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+}
+th:hover { background: color-mix(in srgb, var(--primary) 12%, var(--surface-strong)); }
+
+td { color: var(--text); }
+
+td[contenteditable="true"] { outline: none; }
+
+td[contenteditable="true"]:focus {
+  box-shadow: inset 0 0 0 2px var(--primary);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+th[contenteditable="true"] { outline: none; }
+
+th[contenteditable="true"]:focus {
+  box-shadow: inset 0 0 0 2px var(--primary);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--primary) 14%, var(--surface-strong));
+}
+
+tr.selRow td { background: color-mix(in srgb, var(--primary) 20%, transparent); }
+th.selCol { background: color-mix(in srgb, var(--primary) 26%, var(--surface-strong)); }
+td.selCol { background: color-mix(in srgb, var(--primary) 20%, transparent); }
+
+tr.drag-over-top td { border-top: 2px solid var(--primary); }
+tr.drag-over-bottom td { border-bottom: 2px solid var(--primary); }
+
+.drag-handle {
+  cursor: grab;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  font-size: 18px;
+  color: var(--muted);
+  user-select: none;
+  padding: 0;
+  width: 40px;
+  min-width: 40px;
+}
+
+.drag-handle-header {
+  width: 40px;
+  min-width: 40px;
+  padding: 0;
+  text-align: center;
+}
+
+.drag-handle-cell {
+  width: 40px;
+  min-width: 40px;
+  padding: 0;
+  text-align: center;
+  cursor: grab;
+}
+
+
+.row-index-header,
+.row-index-cell {
+  width: 30px;
+  min-width: 30px;
+  text-align: right;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.row-index-header {
+  cursor: default;
+}
+
+.row-index-header:hover {
+  background: var(--surface-strong);
+}
+
+tr.dragging {
+  opacity: 0.7;
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.drop-zone {
+  height: 32px;
+  border: 2px dashed color-mix(in srgb, var(--primary) 45%, transparent);
+  border-radius: 8px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--primary) 70%, transparent);
+  font-size: 13px;
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+  transition: all 0.2s ease;
+}
+
+.drop-zone.active {
+  border-color: color-mix(in srgb, var(--primary) 75%, transparent);
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  color: color-mix(in srgb, var(--primary) 92%, transparent);
+}
+
+
+#dbHistoryTable td {
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ocrBulkDeleteActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.col-delete-check-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.col-delete-checkbox {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--primary);
+}
+
+.row-delete-check-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.row-delete-checkbox {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--danger);
+}
+
+.row-delete-index {
+  min-width: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Tabulator is used for behavior, but styled to stay close to the old plain table. */
+.tableWrap .tabulator {
+  border: 0;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.tableWrap .tabulator .tabulator-header {
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.tableWrap .tabulator .tabulator-tableholder {
+  overflow-x: hidden !important;
+}
+
+.tableWrap .tabulator .tabulator-header .tabulator-col {
+  box-sizing: border-box;
+  border-right: 1px solid var(--border);
+  background: var(--surface-strong);
+  min-height: 32px;
+}
+
+.tableWrap .tabulator .tabulator-header .tabulator-col:hover,
+.tableWrap .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface-strong));
+}
+
+.tableWrap .tabulator .tabulator-header .tabulator-col:focus,
+.tableWrap .tabulator .tabulator-cell:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.tableWrap .tabulator .tabulator-col-title {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+  padding: 7px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tableWrap .tabulator .tabulator-header-rename-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--primary);
+  border-radius: 3px;
+  padding: 1px 4px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  line-height: 1.35;
+  outline: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.tableWrap .tabulator .tabulator-header-rename-input.is-invalid {
+  border-color: var(--danger);
+  box-shadow: inset 0 0 1px color-mix(in srgb, var(--danger) 45%, transparent);
+}
+
+.tableWrap .tabulator .tabulator-row {
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  min-height: 30px;
+}
+
+.tableWrap .tabulator .tabulator-row:nth-child(even) {
+  background: color-mix(in srgb, var(--text) 2.5%, var(--panel));
+}
+
+.tableWrap .tabulator .tabulator-row:hover {
+  background: color-mix(in srgb, var(--primary) 7%, var(--panel));
+}
+
+.tableWrap .tabulator .tabulator-row.tabulator-selected,
+.tableWrap .tabulator .tabulator-row.tabulator-selected:hover {
+  background: color-mix(in srgb, var(--primary) 14%, var(--panel));
+}
+
+.tableWrap .tabulator .tabulator-row.row-delete-selected,
+.tableWrap .tabulator .tabulator-row.row-delete-selected:hover {
+  background: color-mix(in srgb, var(--danger) 14%, var(--panel));
+  box-shadow: inset 4px 0 0 var(--danger);
+}
+
+.tableWrap .tabulator .tabulator-row.row-delete-selected .tabulator-cell {
+  border-color: color-mix(in srgb, var(--danger) 28%, var(--border));
+}
+
+.tableWrap .tabulator .tabulator-row.row-delete-selected .tabulator-cell:nth-child(2) {
+  background: color-mix(in srgb, var(--danger) 18%, var(--panel));
+}
+
+.tableWrap .tabulator .tabulator-cell {
+  box-sizing: border-box;
+  border-right: 1px solid var(--border);
+  padding: 6px 6px;
+  min-height: 30px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.tableWrap .tabulator .tabulator-col-resize-handle:hover {
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.tableWrap .tabulator .tabulator-row-resize-handle:hover {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+.tableWrap .tabulator .tabulator-cell.tabulator-editing {
+  border: 1px solid var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+}
+
+.tableWrap .tabulator .tabulator-cell input,
+.tableWrap .tabulator .tabulator-cell textarea {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  box-shadow: none;
+}
+
+.tableWrap .tabulator .tabulator-frozen-left {
+  border-right: 1px solid var(--border);
+}
+
+.tableWrap .tabulator .tabulator-footer {
+  display: none;
+}
+
+.tableWrap .tabulator .tabulator-placeholder {
+  color: var(--muted);
+  background: var(--panel);
+  border: 0;
+}
+
+.tableWrap .tabulator .tabulator-row .tabulator-cell:first-child,
+.tableWrap .tabulator .tabulator-header .tabulator-col:first-child {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--text) 2%, var(--panel));
+}
+
+.tableWrap .tabulator .tabulator-row .tabulator-cell:nth-child(2),
+.tableWrap .tabulator .tabulator-header .tabulator-col:nth-child(2) {
+  color: var(--muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in srgb, var(--text) 2%, var(--panel));
+}
+
+.tableWrap .drag-handle {
+  font-size: 14px;
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
+/* # 헤더 클릭 가능 스타일 */
+.tableWrap .tabulator-header .tabulator-col[tabulator-field="row_number"] {
+  cursor: pointer;
+}
+
+/* drag_handle 컬럼 헤더 패딩 및 높이 정리 */
+.tableWrap .tabulator .tabulator-header .tabulator-col[tabulator-field="drag_handle"] {
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  background: var(--surface-strong) !important;
+}
+
+/* 내부 요소 패딩·마진 제거 및 전체 영역 차지 */
+.tableWrap .tabulator .tabulator-header .tabulator-col[tabulator-field="drag_handle"] .tabulator-col-title,
+.tableWrap .tabulator .tabulator-header .tabulator-col[tabulator-field="drag_handle"] .tabulator-col-title-holder,
+.tableWrap .tabulator .tabulator-header .tabulator-col[tabulator-field="drag_handle"] .tabulator-col-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+}
+
+/* 헤더 컨테이너 패딩 제거 */
+.tableWrap .tabulator .tabulator-header,
+.tableWrap .tabulator .tabulator-header-contents,
+.tableWrap .tabulator .tabulator-headers {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.tableWrap .tabulator .tabulator-header .tabulator-col[tabulator-field="row_number"]:hover {
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface-strong));
+}
+
+/* 헤더 선택 시 시각적 효과 */
+.tableWrap .tabulator .tabulator-header .tabulator-col.header-selected {
+  background: color-mix(in srgb, var(--primary) 20%, var(--surface-strong)) !important;
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+/* 다중 행 선택 하이라이트 */
+.tabulator-selected-multi {
+  background-color: #e3f2fd !important;
+  border-left: 3px solid #2196f3 !important;
+}
+
+.tabulator-selected-multi.tabulator-selectable:hover {
+  background-color: #bbdefb !important;
+}

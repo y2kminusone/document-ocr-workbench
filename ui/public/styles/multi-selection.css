@@ -1,0 +1,54 @@
+/* 다중 선택 스타일 */
+
+/* 다중 선택된 헤더 스타일 */
+.tabulator-col-selected {
+  background-color: #e3f2fd !important;
+  border: 2px solid #2196f3 !important;
+  box-shadow: 0 0 4px rgba(33, 150, 243, 0.3);
+}
+
+.tabulator-col-selected .tabulator-col-title {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+/* 다중 선택된 행 스타일 */
+.tabulator-row.tabulator-selected {
+  background-color: #e3f2fd !important;
+}
+
+.tabulator-row.tabulator-selected .tabulator-cell {
+  background-color: #e3f2fd !important;
+}
+
+/* 다중 선택된 셀 스타일 */
+.tabulator-cell.tabulator-cell-selected {
+  background-color: #bbdefb !important;
+  border: 2px solid #2196f3;
+}
+
+/* 호버 효과 */
+.tabulator-col-selected:hover {
+  background-color: #bbdefb !important;
+}
+
+.tabulator-row.tabulator-selected:hover {
+  background-color: #bbdefb !important;
+}
+
+/* 선택 힌트 스타일 */
+.selection-hint {
+  font-size: 12px;
+  color: #666;
+  padding: 4px 8px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+/* 다중 선택 모드일 때의 힌트 */
+.selection-hint.multi-select {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #2196f3;
+}

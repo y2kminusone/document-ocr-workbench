@@ -1,0 +1,233 @@
+<main class="layout hidden" id="screenClassification">
+  <aside class="sidebar">
+    <div class="resizer" id="classificationSidebarResizer"></div>
+    <div class="sectionHeader">
+      <div class="sectionTitle">업로드</div>
+      <div class="sectionDesc">PDF를 업로드하고 분류하세요.</div>
+    </div>
+
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">PDF</div>
+        <div class="cardMeta">분류용 업로드</div>
+      </div>
+      <div class="stack">
+        <input id="classificationPdfFile" type="file" accept="application/pdf" />
+        <div class="row">
+          <label class="label">DPI</label>
+          <input id="classificationPdfDpi" type="number" min="72" max="300" value="300" />
+        </div>
+        <div class="row">
+          <label class="label">회전</label>
+          <select id="classificationPdfRotation">
+            <option value="">없음</option>
+            <option value="cw">시계방향 90°</option>
+          </select>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary" id="btnClassificationUploadPdf">업로드 + 분류</button>
+          <button class="btn btn-ghost" id="btnClassificationClearPdf" type="button">선택 취소</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sectionHeader">
+      <div class="sectionTitle">작업</div>
+      <div class="sectionDesc">작업을 선택하면 페이지 목록이 열립니다.</div>
+    </div>
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">작업 목록</div>
+        <div class="cardMeta">PDF 작업</div>
+      </div>
+      <div class="stack" style="padding: 10px 10px 0;">
+        <div class="row">
+          <label class="label">상태</label>
+          <select id="classificationJobStatusFilter">
+            <option value="all">전체</option>
+            <option value="queued">queued</option>
+            <option value="processing">processing</option>
+            <option value="done">done</option>
+            <option value="error">error</option>
+            <option value="cancelled">cancelled</option>
+          </select>
+        </div>
+        <div class="row">
+          <label class="label">검색</label>
+          <input id="classificationJobSearch" type="text" placeholder="작업 종류(kind) / job_id" />
+        </div>
+      </div>
+      <div class="jobs" id="classificationJobs"></div>
+    </div>
+
+    <div class="sectionHeader">
+      <div class="sectionTitle">페이지</div>
+      <div class="sectionDesc">관심/비관심으로 분류하고 관리하세요.</div>
+    </div>
+    
+    <!-- 관심 페이지 섹션 -->
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">관심 페이지</div>
+        <div class="cardMeta" id="interestPageCount">0개</div>
+      </div>
+      <div class="stack">
+        <div class="row">
+        </div>
+      </div>
+      <div class="pages" id="classificationInterestPages"></div>
+    </div>
+    
+    <!-- 비관심 페이지 섹션 -->
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">비관심 페이지</div>
+        <div class="cardMeta" id="nonInterestPageCount">0개</div>
+      </div>
+      <div class="pages" id="classificationNonInterestPages"></div>
+    </div>
+  </aside>
+
+  <section class="content">
+    <!-- 메인 이미지 영역 (전체 화면) -->
+    <div class="card">
+      <!-- 컴팩트 헤더 -->
+      <div class="cardHeader">
+        <div class="row" style="align-items: center; gap: 12px;">
+          <div class="cardTitle">이미지</div>
+          <div class="cardMeta" id="classificationFileName" style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></div>
+          <div class="progressText muted" id="classificationCurrentPage">페이지 1 / 10</div>
+        </div>
+        <div class="contentSub" id="classificationStatus">페이지를 검토하고 분류하세요.</div>
+      </div>
+      <div style="flex: 1; overflow: hidden; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+        <img id="classificationPreviewImg" alt="" />
+      </div>
+      
+      <!-- 작은 컨트롤 바 (이미지 하단) -->
+      <div class="stack">
+        <div class="row">
+          <!-- 관심/비관심 토글 -->
+          <button class="btn btn-sm" id="btnClassificationToggleInterest" type="button" title="관심/비관심 토글 (A)">
+            <span id="classificationInterestIcon">☆</span>
+          </button>
+          
+          <!-- 회전 버튼들 -->
+          <button class="btn btn-sm" id="btnClassificationRotateCw" type="button" title="시계방향 90° (S)">↻</button>
+          
+          <!-- 리셋 버튼 -->
+          <button class="btn btn-sm btn-ghost" id="btnClassificationReset" type="button" title="회전/확대 리셋 (R)">↺ 리셋</button>
+          
+          <!-- 페이지 네비게이션 -->
+          <button class="btn btn-sm" id="btnClassificationPrevPage" type="button" title="이전 페이지 (←)">←</button>
+          <input id="classificationPageGo" type="number" min="1" placeholder="page no" style="width: 85px; padding: 4px 8px;" />
+          <button class="btn btn-sm" id="btnClassificationPageGo" type="button" title="페이지 이동 (G)">이동</button>
+          <button class="btn btn-sm" id="btnClassificationNextPage" type="button" title="다음 페이지 (→)">→</button>
+          
+          <!-- 처리 버튼 -->
+          <button class="btn btn-sm btn-primary" id="btnClassificationSaveAndNext" type="button" title="처리 (D)">처리</button>
+          
+          <!-- 도움말 -->
+          <button class="btn btn-sm btn-ghost" id="btnClassificationHelp" type="button" title="도움말 (H)">?</button>
+        </div>
+        <div class="hint" style="margin-top: 8px; font-size: 12px;">
+          단축키: ←/→ (이전/다음), A (관심/비관심), S (회전), R (확대/축소 리셋), D (처리), G (페이지 이동), H (도움말)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 시스템 로그 버튼 비활성화 (성능 최적화) -->
+  <!-- <button class="btn btn-primary jobLogsFab" id="btnJobLogsToggle" type="button" aria-expanded="false">시스템 로그</button> -->
+  
+  <!-- 시스템 로그 드로어 -->
+  <section class="jobLogsDrawer hidden" id="jobLogsDrawer" aria-hidden="true">
+    <div class="jobLogsDrawerHeader" id="jobLogsDrawerHeader" title="드래그해서 이동">
+      <div>
+        <div class="cardTitle">시스템 로그</div>
+        <div class="hint" id="jobLogsHint">전체 작업의 실시간 로그가 표시됩니다.</div>
+      </div>
+      <div class="row" style="margin:0;">
+        <button class="btn btn-ghost" id="btnJobLogsScrollBottom" type="button">맨 아래로</button>
+        <button class="btn btn-ghost" id="btnJobLogsReset" type="button">위치 초기화</button>
+        <button class="btn btn-ghost" id="btnJobLogsClose" type="button">닫기</button>
+      </div>
+    </div>
+    <div class="jobLogs" id="jobLogs"></div>
+  </section>
+
+  <!-- 도움말 드로어 -->
+  <section class="jobLogsDrawer hidden" id="classificationHelpDrawer" aria-hidden="true">
+    <div class="jobLogsDrawerHeader" id="classificationHelpDrawerHeader" title="드래그해서 이동">
+      <div>
+        <div class="cardTitle">단축키 도움말</div>
+        <div class="hint">분류 페이지 단축키</div>
+      </div>
+      <div class="row" style="margin:0;">
+        <button class="btn btn-ghost" id="btnClassificationHelpClose" type="button">닫기</button>
+      </div>
+    </div>
+    <div class="jobLogs">
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">페이지 네비게이션</div>
+        </div>
+        <div class="stack" style="padding: 10px;">
+          <div class="row">
+            <kbd>←</kbd>
+            <span>이전 페이지</span>
+          </div>
+          <div class="row">
+            <kbd>→</kbd>
+            <span>다음 페이지</span>
+          </div>
+          <div class="row">
+            <kbd>G</kbd>
+            <span>특정 페이지로 이동</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">분류 및 회전</div>
+        </div>
+        <div class="stack" style="padding: 10px;">
+          <div class="row">
+            <kbd>A</kbd>
+            <span>관심/비관심 토글</span>
+          </div>
+          <div class="row">
+            <kbd>S</kbd>
+            <span>회전 순환 (없음 ↔ CW)</span>
+          </div>
+          <div class="row">
+            <kbd>R</kbd>
+            <span>회전/확대 리셋</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">저장 및 전송</div>
+        </div>
+        <div class="stack" style="padding: 10px;">
+          <div class="row">
+            <kbd>D</kbd>
+            <span>관심으로 변경 + OCR 처리 요청 + 다음 페이지</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">기타</div>
+        </div>
+        <div class="stack" style="padding: 10px;">
+          <div class="row">
+            <kbd>H</kbd>
+            <span>도움말 표시/숨기기</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,114 @@
+<main class="layout hidden" id="screenDb">
+  <aside class="sidebar">
+    <div class="sectionHeader">
+      <div class="sectionTitle">DB 테이블</div>
+      <div class="sectionDesc">테이블을 선택하고 검색/필터링합니다.</div>
+    </div>
+
+    <div class="card">
+      <div class="stack">
+        <div class="row">
+          <label class="label">Table</label>
+          <select id="dbTableSelect"></select>
+        </div>
+        <div class="row">
+          <label class="label">검색</label>
+          <input id="dbSearch" type="text" placeholder="title / image_name" />
+        </div>
+        <div class="row">
+          <label class="label">내용</label>
+          <input id="dbTableQ" type="text" placeholder="컬럼 내용 검색 (Spool/Heat/HCN/C/Si 등)" />
+        </div>
+        <div class="row">
+          <button class="btn btn-primary" id="btnDbReload">조회</button>
+          <div class="rightInline">
+            <button class="btn" id="btnDbPrev">이전</button>
+            <button class="btn" id="btnDbNext">다음</button>
+          </div>
+        </div>
+        <div class="hint" id="dbPageInfo"></div>
+      </div>
+    </div>
+
+    <div class="sectionHeader">
+      <div class="sectionTitle">결과 목록</div>
+      <div class="sectionDesc">행을 선택하면 오른쪽에서 상세 편집합니다.</div>
+    </div>
+    <div class="card">
+      <div class="files" id="dbRows"></div>
+    </div>
+  </aside>
+
+  <section class="content">
+    <div class="contentTop">
+      <div>
+        <div class="contentTitle">DB 상세</div>
+        <div class="contentSub" id="dbDetailTitle">행을 선택하세요.</div>
+      </div>
+      <div class="progressWrap">
+        <div class="progressText muted" id="dbDetailMeta"></div>
+      </div>
+    </div>
+
+    <div class="contentGrid dbContentGrid">
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">기본 정보</div>
+          <div class="cardMeta">title / 공통필드</div>
+        </div>
+        <div class="stack">
+          <div class="row">
+            <label class="label">title</label>
+            <input id="dbEditTitle" type="text" />
+          </div>
+          <div class="row">
+            <button class="btn btn-danger" id="btnDbDeleteTable">테이블 삭제</button>
+          </div>
+          <div class="hint" id="dbDetailHint"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">행 데이터</div>
+        <div class="cardMeta">클릭해서 편집</div>
+      </div>
+      <div class="stack">
+        <div class="row">
+          <button class="btn btn-primary" id="btnDbSaveRow" disabled>저장</button>
+          <button class="btn" id="btnDbDeleteRow" disabled>삭제</button>
+          <button class="btn" id="dbCopyAll" type="button">전체 복사</button>
+        </div>
+        <div class="hint" id="dbRowDataHint"></div>
+        <div class="hint" id="dbRowCountHint">총 0행</div>
+        <div class="hint" id="dbSelHint"></div>
+      </div>
+      <div class="tableWrap dbTableWrap">
+        <table id="dbTableDataTable"></table>
+      </div>
+    </div>
+
+    
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">수정 이력</div>
+        <div class="cardMeta" id="dbHistoryPageInfo">문서를 선택하면 이력이 표시됩니다.</div>
+      </div>
+      <div class="row dbHistoryToolbar">
+        <!-- <label class="label" for="dbHistoryRowIndex">row_index</label>
+        <input id="dbHistoryRowIndex" type="number" min="0" placeholder="전체" /> -->
+        <button class="btn" id="btnDbHistoryReload" type="button">새로고침</button>
+        <div class="rightInline">
+          <button class="btn" id="btnDbHistoryPrev" type="button">이전</button>
+          <button class="btn" id="btnDbHistoryNext" type="button">다음</button>
+        </div>
+      </div>
+      <div class="hint" id="dbHistoryHint">문서를 선택해 주세요.</div>
+      <div class="files" id="dbHistoryVersionList"></div>
+      <div class="tableWrap dbHistoryTableWrap">
+        <table id="dbHistoryTable"></table>
+      </div>
+    </div>
+  </section>
+</main>

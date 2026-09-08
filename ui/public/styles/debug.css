@@ -1,0 +1,25 @@
+/* .topbar {
+    background: #0055aa;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: sans-serif;
+  }
+  
+  .tabBtn {
+    padding: 8px 16px;
+    margin: 0 4px;
+    background: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .tabBtn.active {
+    background: #ffcc00;
+    color: #000;
+  }
+   */

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>OCR Web UI</title>
+    <script>
+      (function () {
+        try {
+          const mode = (localStorage.getItem("ocr_ui_theme") || "system").toLowerCase();
+          const isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const resolved = mode === "dark" || mode === "light" ? mode : (isDark ? "dark" : "light");
+          document.documentElement.setAttribute("data-theme", resolved);
+          document.documentElement.setAttribute("data-theme-mode", ["dark", "light", "system"].includes(mode) ? mode : "system");
+        } catch (_) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="./styles/layout.css" />
+    <link rel="stylesheet" href="./styles/components.css" />
+    <link rel="stylesheet" href="./styles/tables.css" />
+    <link rel="stylesheet" href="./styles/modal.css" />
+    <link rel="stylesheet" href="./styles/utilities.css" />
+    <!-- Tabulator CSS -->
+    <link rel="stylesheet" href="./lib/css/tabulator_modern.min.css" />
+  </head>
+  <body>
+    <div data-include="./partials/topbar.html"></div>
+    <div data-include="./partials/classification_layout.html"></div>
+    <div data-include="./partials/ocr_layout.html"></div>
+    <div data-include="./partials/db_layout.html"></div>
+    <div data-include="./partials/modals.html"></div>
+
+    <script>
+      window.getDbQuery = function getDbQuery() {
+        const qEl = document.getElementById("dbSearch");
+        const tEl = document.getElementById("dbTableQ");
+        return {
+          q: (qEl?.value || "").trim(),
+          table_q: (tEl?.value || "").trim(),
+        };
+      };
+    </script>
+    <!-- Tabulator JS -->
+    <script src="./lib/tabulator.min.js"></script>
+    <!-- VLM Management - app.js에서 import하여 사용 -->
+    <script type="module" src="./boot.js"></script>
+  </body>
+</html>
+
+

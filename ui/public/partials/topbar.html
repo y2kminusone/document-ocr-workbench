@@ -1,0 +1,33 @@
+<header class="topbar">
+  <div class="brand">
+    <div>
+      <div class="title">OCR Web UI</div>
+      <div class="subtitle">Upload → Process → Edit → Save to DB</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tabBtn active" id="tabClassification">분류</button>
+    <button class="tabBtn" id="tabOcr">OCR 처리</button>
+    <button class="tabBtn" id="tabDb">DB 관리</button>
+  </div>
+  <div class="right">
+    <!-- ==================== VLM 디자인 패턴 관련 코드 주석 처리 ====================
+    <label class="vlmSwitch" for="vlmModelSelect">
+      <span class="vlmSwitchLabel">VLM 모델</span>
+      <select id="vlmModelSelect" aria-label="VLM 모델 선택">
+        <option value="" disabled selected>로딩 중...</option>
+      </select>
+    </label>
+    ============================================================ -->
+    <label class="themeSwitch" for="themeModeSelect">
+      <span class="themeSwitchLabel">테마</span>
+      <select id="themeModeSelect" aria-label="테마 모드 선택">
+        <option value="system">System</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
+    <button class="btn btn-ghost" id="btnHealth">서버 상태</button>
+    <button class="btn btn-ghost" id="btnDbConfig">DB 설정</button>
+  </div>
+</header>

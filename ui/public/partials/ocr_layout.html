@@ -1,0 +1,287 @@
+<main class="layout" id="screenOcr">
+  <aside class="sidebar">
+    <div class="resizer" id="sidebarResizer"></div>
+    <div class="sectionHeader">
+      <div class="sectionTitle">업로드</div>
+      <div class="sectionDesc">파일 종류를 선택하고 업로드 처리를 진행하세요.</div>
+    </div>
+
+    <div class="card">
+      <div class="stack">
+        <div class="row">
+          <label class="label">파일</label>
+          <div class="segmented" role="tablist" aria-label="업로드 파일 종류">
+            <input type="radio" name="uploadKind" id="uploadKindImage" value="image" />
+            <label for="uploadKindImage" role="tab" aria-controls="uploadImageCard">이미지</label>
+            <input type="radio" name="uploadKind" id="uploadKindPdf" value="pdf" checked />
+            <label for="uploadKindPdf" role="tab" aria-controls="uploadPdfCard">PDF</label>
+          </div>
+        </div>
+        <div class="hint">선택한 종류만 아래에 표시됩니다.</div>
+      </div>
+    </div>
+
+    <div class="card uploadCard" id="uploadImageCard">
+      <div class="cardHeader">
+        <div class="cardTitle">이미지</div>
+        <div class="cardMeta">여러 장 가능</div>
+      </div>
+      <div class="stack">
+        <input id="imageFiles" type="file" accept="image/*" multiple />
+        <div class="row">
+          <label class="label">회전</label>
+          <select id="rotationImage">
+            <option value="">없음</option>
+            <option value="cw">시계방향 90°</option>
+          </select>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary" id="btnUploadImages">업로드 + 처리</button>
+          <button class="btn btn-ghost" id="btnClearImage" type="button">선택 취소</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card uploadCard hidden" id="uploadPdfCard">
+      <div class="cardHeader">
+        <div class="cardTitle">PDF</div>
+        <div class="cardMeta">관심페이지 필터</div>
+      </div>
+      <div class="stack">
+        <input id="pdfFile" type="file" accept="application/pdf" />
+        <div class="row">
+          <label class="label">DPI</label>
+          <input id="pdfDpi" type="number" min="72" max="300" value="300" />
+        </div>
+        <div class="row">
+          <label class="label">회전</label>
+          <select id="rotationPdf">
+            <option value="">없음</option>
+            <option value="cw">시계방향 90°</option>
+          </select>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary" id="btnUploadPdf">업로드 + 필터 + 처리</button>
+          <button class="btn btn-ghost" id="btnClearPdf" type="button">선택 취소</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sectionHeader">
+      <div class="sectionTitle">작업</div>
+      <div class="sectionDesc">작업을 선택하면 파일 목록이 열립니다.</div>
+    </div>
+    <div class="card">
+      <div class="stack" style="padding: 10px 10px 0;">
+        <div class="row">
+          <label class="label">상태</label>
+          <select id="jobStatusFilter">
+            <option value="all">전체</option>
+            <option value="queued">queued</option>
+            <option value="processing">processing</option>
+            <option value="done">done</option>
+            <option value="error">error</option>
+            <option value="cancelled">cancelled</option>
+          </select>
+        </div>
+        <div class="row">
+          <label class="label">검색</label>
+          <input id="jobSearch" type="text" placeholder="작업 종류(kind) / job_id" />
+        </div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </div>
+
+    <div class="sectionHeader">
+      <div class="sectionTitle">파일</div>
+      <div class="sectionDesc">전체/관심/비관심 필터와 함께 확인하세요.</div>
+    </div>
+    <div class="card">
+      <div class="stack" style="padding: 10px;">
+        <div class="row">
+          <label class="label">표시</label>
+          <select id="fileViewFilter">
+            <option value="all">전체</option>
+            <option value="interest">관심</option>
+            <option value="non_interest">비관심</option>
+          </select>
+        </div>
+        <div class="row">
+          <label class="label">검색</label>
+          <input id="fileSearch" type="text" placeholder="파일명" />
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="files" id="files"></div>
+    </div>
+
+  </aside>
+
+  <section class="content">
+      <div class="contentTop">
+      <div>
+        <div class="contentTitle">결과</div>
+        <div class="contentSub" id="jobStatus">왼쪽에서 작업과 파일을 선택하면 결과가 표시됩니다.</div>
+      </div>
+      <div class="progressWrap">
+        <div class="progressText muted" id="jobProgress"></div>
+        <div class="progressBar"><div class="progressFill" id="jobProgressFill" style="width:0%"></div></div>
+        <div class="row" style="margin-top:6px; justify-content: flex-end;">
+          <button class="btn btn-ghost" id="btnShowPipeline" type="button" disabled>처리 파이프라인</button>
+          <button class="btn btn-success" id="btnMarkJobDone" type="button" disabled>완료</button>
+          <button class="btn" id="btnRetryJob" type="button" disabled>재시도</button>
+          <button class="btn btn-danger" id="btnCancelJob" type="button" disabled>작업 중지</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="contentGridHeader">
+      <button class="btn btn-ghost btn-sm" id="btnToggleContentGrid" type="button" title="미리보기/편집 영역 토글">
+        <span id="contentGridToggleIcon">▼</span>
+        <span id="contentGridToggleText">미리보기/편집 숨기기</span>
+      </button>
+    </div>
+    <div class="contentGrid" id="contentGrid">
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">미리보기</div>
+          <div class="cardMeta">선택 파일</div>
+        </div>
+        <div class="preview">
+          <img id="previewImg" alt="" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardHeader">
+          <div class="cardTitle">편집</div>
+          <div class="cardMeta">분류/회전/재처리/DB 저장</div>
+        </div>
+        <div class="stack">
+          <div class="row">
+            <label class="label">관심 분류</label>
+            <select id="fileInterestSelect">
+              <option value="">선택 유지</option>
+              <option value="interest">관심</option>
+              <option value="non_interest">비관심</option>
+            </select>
+          </div>
+          <div class="row">
+            <label class="label">수동 회전</label>
+            <select id="fileRotationSelect">
+              <option value="">없음</option>
+              <option value="cw">시계방향 90°</option>
+              <option value="ccw">반시계방향 90°</option>
+              <option value="180">180°</option>
+            </select>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnApplyFileOverride" type="button" disabled>적용(값만)</button>
+            <button class="btn btn-primary" id="btnReprocessWithOverride" type="button" disabled>적용 + 재처리</button>
+          </div>
+          <div class="row">
+            <label class="label">title</label>
+            <input id="titleInput" type="text" placeholder="문서명(title)" />
+          </div>
+          <div class="row">
+            <button class="btn" id="btnSaveEdits" disabled>편집 저장</button>
+            <button class="btn btn-accent" id="btnSaveDb" disabled>DB 저장</button>
+          </div>
+          <div class="hint" id="tableHint">테이블을 클릭해서 수정하고, 저장 버튼으로 반영하세요.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="cardHeader">
+        <div class="cardTitle">테이블</div>
+        <div class="cardMeta">클릭해서 편집</div>
+      </div>
+      <div class="tableToolbar" id="ocrTableToolbar">
+        <div class="toolbarGroup" aria-label="행 제어">
+          <div class="toolbarLabel">행</div>
+          <button class="btn" id="ocrAddRow" type="button">추가</button>
+          <button class="btn btn-danger" id="ocrRowBulkDeleteStart" type="button">삭제 모드</button>
+          <button class="btn" id="ocrMoveRowUp" type="button">↑</button>
+          <button class="btn" id="ocrMoveRowDown" type="button">↓</button>
+          <div class="ocrBulkDeleteActions hidden" id="ocrRowBulkDeleteActions" aria-live="polite">
+            <span class="hint" id="ocrRowBulkDeleteCount">선택 0개</span>
+            <button class="btn" id="ocrRowBulkDeleteSelectAll" type="button">전체 선택</button>
+            <button class="btn btn-danger" id="ocrRowBulkDeleteConfirm" type="button" disabled>삭제</button>
+            <button class="btn btn-ghost" id="ocrRowBulkDeleteCancel" type="button">취소</button>
+          </div>
+        </div>
+        <div class="toolbarGroup" aria-label="열 제어">
+          <div class="toolbarLabel">열</div>
+          <button class="btn" id="ocrAddColEnd" type="button">추가</button>
+          <div class="dropdown" id="ocrAddDefaultChemColsDropdown">
+            <button class="btn" id="ocrAddDefaultChemCols" type="button" title="기본열 추가">기본열 ▼</button>
+            <div class="dropdown-menu hidden" id="ocrAddDefaultChemColsMenu">
+              <button class="dropdown-item" data-type="material">자재일람표</button>
+              <button class="dropdown-item" data-type="test">시험성적서</button>
+            </div>
+          </div>
+          <button class="btn btn-danger" id="ocrBulkDeleteStart" type="button">삭제 모드</button>
+          <button class="btn" id="ocrColLeft" type="button">←</button>
+          <button class="btn" id="ocrColRight" type="button">→</button>
+          <div class="ocrBulkDeleteActions hidden" id="ocrBulkDeleteActions" aria-live="polite">
+            <span class="hint" id="ocrBulkDeleteCount">선택 0개</span>
+            <button class="btn" id="ocrBulkDeleteSelectAll" type="button">전체 선택</button>
+            <button class="btn btn-danger" id="ocrBulkDeleteConfirm" type="button" disabled>삭제</button>
+            <button class="btn btn-ghost" id="ocrBulkDeleteCancel" type="button">취소</button>
+          </div>
+        </div>
+        <div class="toolbarGroup toolbarGroupMeta" aria-label="공통 동작">
+          <div class="toolbarLabel">공통</div>
+          <button class="btn" id="ocrUndoDelete" type="button">삭제 복구</button>
+          <button class="btn" id="ocrCopyAll" type="button">전체 복사</button>
+          <div class="hint" id="ocrRowCountHint">총 0행</div>
+        </div>
+      </div>
+      <div class="tableWrap">
+        <div id="resultTable"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 시스템 로그 버튼 비활성화 (성능 최적화) -->
+  <!-- <button class="btn btn-primary jobLogsFab" id="btnOcrJobLogsToggle" type="button" aria-expanded="false">시스템 로그</button> -->
+  
+  <!-- 처리 파이프라인 모달 -->
+  <section class="modal hidden" id="pipelineModal" aria-hidden="true" data-close="1">
+    <div class="modalContent" style="max-width: 600px;">
+      <div class="modalHeader">
+        <div class="cardTitle">처리 파이프라인</div>
+        <div class="cardMeta">Doc Filter / YOLO / OCR 단계 정보</div>
+        <button class="btn btn-ghost btn-mini" id="btnClosePipelineModal" type="button" data-close="1">닫기</button>
+      </div>
+      <div class="modalBody">
+        <div class="stack" id="pipelinePanel">
+          <div class="hint">파일을 선택하면 단계별 소요 시간과 오류 지점이 표시됩니다.</div>
+        </div>
+        <div class="yoloPreview" id="yoloPreviewContainer" style="display: none; margin-top: 16px;">
+          <div class="cardTitle" style="margin-bottom: 8px;">YOLO Detection</div>
+          <img id="yoloPreviewImg" alt="YOLO Detection Result" style="max-width: 100%; border-radius: 4px;" />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="jobLogsDrawer hidden" id="ocrJobLogsDrawer" aria-hidden="true">
+    <div class="jobLogsDrawerHeader" id="ocrJobLogsDrawerHeader" title="드래그해서 이동">
+      <div>
+        <div class="cardTitle">시스템 로그</div>
+        <div class="hint" id="jobLogsHint">전체 작업의 실시간 로그가 표시됩니다.</div>
+      </div>
+      <div class="row" style="margin:0;">
+        <button class="btn btn-ghost" id="btnOcrJobLogsScrollBottom" type="button">맨 아래로</button>
+        <button class="btn btn-ghost" id="btnOcrJobLogsReset" type="button">위치 초기화</button>
+        <button class="btn btn-ghost" id="btnOcrJobLogsClose" type="button">닫기</button>
+      </div>
+    </div>
+    <div class="jobLogs" id="ocrJobLogs"></div>
+  </section>
+
+</main>

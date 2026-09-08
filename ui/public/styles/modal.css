@@ -1,0 +1,37 @@
+.modal { display: none; position: fixed; inset: 0; z-index: 50; }
+.modal[aria-hidden="false"] { display: block; }
+.modalBackdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+.modalBody {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(560px, calc(100vw - 30px));
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.modalTitle { font-weight: 800; }
+.modalContent { padding: 14px; }
+
+.jsonArea {
+  width: 100%;
+  min-height: 360px;
+  resize: vertical;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
